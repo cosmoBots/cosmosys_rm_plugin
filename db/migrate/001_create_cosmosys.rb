@@ -1,16 +1,15 @@
-		# Trackers
 include Redmine::I18n
  class CreateCosmosys < ActiveRecord::Migration[5.2]
 	def up
 
 		# Roles
-        manager = Role.create! :name => 'RqMngr',
+		manager = Role.create! :name => 'RqMngr',
                                :issues_visibility => 'all',
                                :users_visibility => 'all'
-        manager.permissions = manager.setable_permissions.collect {|p| p.name}
-        manager.save!
+		manager.permissions = manager.setable_permissions.collect {|p| p.name}
+		manager.save!
 
-        writer = Role.create!  :name => 'RqWriter',
+		writer = Role.create!  :name => 'RqWriter',
                                   :permissions => [:manage_versions,
                                                   :manage_categories,
                                                   :view_issues,
@@ -34,7 +33,7 @@ include Redmine::I18n
                                                   :commit_access,
                                                   :manage_related_issues]
 
-        reviewer = Role.create! :name => 'RqReviewer',
+		reviewer = Role.create! :name => 'RqReviewer',
                                 :permissions => [:view_issues,
                                                 :add_issue_notes,
                                                 :save_queries,
@@ -45,7 +44,7 @@ include Redmine::I18n
                                                 :browse_repository,
                                                 :view_changesets]
 
-        developer = Role.create! :name => 'RqDev',
+		developer = Role.create! :name => 'RqDev',
                                 :permissions => [:view_issues,
                                                 :add_issue_notes,
                                                 :save_queries,
@@ -56,7 +55,7 @@ include Redmine::I18n
                                                 :browse_repository,
                                                 :view_changesets]
 
-        tester = Role.create! :name => 'RqTest',
+		tester = Role.create! :name => 'RqTest',
                                 :permissions => [:view_issues,
                                                 :add_issue_notes,
                                                 :save_queries,
@@ -67,7 +66,7 @@ include Redmine::I18n
                                                 :browse_repository,
                                                 :view_changesets]
 
-		# Trackers
+		# Statuses
 		stdraft = IssueStatus.create!(:name => 'RqDraft', :is_closed => false)
 		ststable = IssueStatus.create!(:name => 'RqStable', :is_closed => false)
 		stapproved = IssueStatus.create!(:name => 'RqApproved', :is_closed => false)
@@ -81,77 +80,84 @@ include Redmine::I18n
 			strejected, sterased, stzombie]
 
 		# Trackers
-		rqtrck = Tracker.create!(:name => 'Req',    :default_status_id => stdraft.id, :is_in_chlog => true,  :is_in_roadmap => true)
-		rqdoctrck = Tracker.create!(:name => 'ReqDoc', :default_status_id => stdraft.id, :is_in_chlog => true,  :is_in_roadmap => true)
+		rqtrck = Tracker.create!(:name => 'Req',    
+			:default_status_id => stdraft.id, 
+			:is_in_chlog => true,  :is_in_roadmap => true)
+		rqdoctrck = Tracker.create!(:name => 'ReqDoc', 
+			:default_status_id => stdraft.id, 
+			:is_in_chlog => true, :is_in_roadmap => true)
 
 		trackers = [rqtrck, rqdoctrck]
 
 		trackers.each{|t|
+		
 			# Writer transitions
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stdraft.id, 
-	       		:new_status_id => ststable.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stdraft.id, 
-	       		:new_status_id => sterased.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stdraft.id, 
-	       		:new_status_id => stzombie.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => ststable.id, 
-	       		:new_status_id => stdraft.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stzombie.id, 
-	       		:new_status_id => stdraft.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stapproved.id, 
-	       		:new_status_id => stdraft.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => strejected.id, 
-	       		:new_status_id => sterased.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => strejected.id, 
-	       		:new_status_id => stdraft.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stvalidated.id, 
-	       		:new_status_id => stdraft.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => writer.id, :old_status_id => stincluded.id, 
-	       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stdraft.id, 
+		       		:new_status_id => ststable.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stdraft.id, 
+		       		:new_status_id => sterased.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stdraft.id, 
+		       		:new_status_id => stzombie.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => ststable.id, 
+		       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stzombie.id, 
+		       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stapproved.id, 
+		       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => strejected.id, 
+		       		:new_status_id => sterased.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => strejected.id, 
+		       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stvalidated.id, 
+		       		:new_status_id => stdraft.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => writer.id, :old_status_id => stincluded.id, 
+		       		:new_status_id => stdraft.id)
 
 
 			# Reviewer transitions
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => reviewer.id, :old_status_id => ststable.id, 
-	       		:new_status_id => stapproved.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => reviewer.id, :old_status_id => ststable.id, 
-	       		:new_status_id => strejected.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => reviewer.id, :old_status_id => ststable.id, 
+		       		:new_status_id => stapproved.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => reviewer.id, :old_status_id => ststable.id, 
+		       		:new_status_id => strejected.id)
 
 			# Developer transitions
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => developer.id, :old_status_id => stapproved.id, 
-	       		:new_status_id => stincluded.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => developer.id, :old_status_id => stincluded.id, 
-	       		:new_status_id => stapproved.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => developer.id, :old_status_id => stapproved.id, 
+		       		:new_status_id => stincluded.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => developer.id, :old_status_id => stincluded.id, 
+		       		:new_status_id => stapproved.id)
 
 			# Reviewer transitions
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => tester.id, :old_status_id => stincluded.id, 
-	       		:new_status_id => stvalidated.id)
-	       	WorkflowTransition.create!(:tracker_id => t.id,
-	       		:role_id => tester.id, :old_status_id => stvalidated.id, 
-	       		:new_status_id => stincluded.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => tester.id, :old_status_id => stincluded.id, 
+		       		:new_status_id => stvalidated.id)
+		       	WorkflowTransition.create!(:tracker_id => t.id,
+		       		:role_id => tester.id, :old_status_id => stvalidated.id, 
+		       		:new_status_id => stincluded.id)
 
 			# Manager transitions
 			rqstatuses.each { |os|
 				rqstatuses.each { |ns|
-					WorkflowTransition.create!(:tracker_id => t.id, :role_id => manager.id, :old_status_id => os.id, :new_status_id => ns.id) unless os == ns
+					WorkflowTransition.create!(:tracker_id => t.id, 
+						:role_id => manager.id, 
+						:old_status_id => os.id, 
+						:new_status_id => ns.id) unless os == ns
 				}
 			}
 		}
-
 
 	end
 

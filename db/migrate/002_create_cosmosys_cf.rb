@@ -1,21 +1,23 @@
-		# Trackers
+
 include Redmine::I18n
  class CreateCosmosysCf < ActiveRecord::Migration[5.2]
 	def up
+		# Trackers
 		rqtrck = Tracker.find_by_name('Req')
 		rqdoctrck = Tracker.find_by_name('ReqDoc')
 		rqtitlefield = IssueCustomField.create!(:name => 'RqTitle', 
 			:field_format => 'string', :searchable => true,
 			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
 
-	    rqtypefield = IssueCustomField.create!(:name => 'RqType', 
-	    	:field_format => 'list', :possible_values => ['Info', 'Complex',
+		# Custom fields
+		rqtypefield = IssueCustomField.create!(:name => 'RqType', 
+	    		:field_format => 'list', :possible_values => ['Info', 'Complex',
 	    		'Opt','Mech','Hw','Sw'], 
 	    		:is_filter => true,
 	    		:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
 
-	    rqlevelfield = IssueCustomField.create!(:name => 'RqLevel', 
-	    	:field_format => 'list', :possible_values => ['None', 'System',
+		rqlevelfield = IssueCustomField.create!(:name => 'RqLevel', 
+	    		:field_format => 'list', :possible_values => ['None', 'System',
 	    		'Derived','External','Shared'], 
 	    		:is_filter => true,
 	    		:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
@@ -43,7 +45,8 @@ include Redmine::I18n
 			:field_format => 'string', :searchable => false,
 			:is_for_all => true, :tracker_ids => [rqdoctrck.id])
 
-'''
+=begin
+Not imported yet
 	RqUnitary?	Boolean				 Delete
 	RqComplete?	Boolean				 Delete
 	RqConsistent?	Boolean				 Delete
@@ -53,7 +56,7 @@ include Redmine::I18n
 	RqUnambiguous?	Boolean				 Delete
 	RqSpcImportant	Boolean				 Delete
 	RqVerifiable?
-	'''	
+=end
 	end
 
 	def down
@@ -65,7 +68,6 @@ include Redmine::I18n
 		if (tmp != nil) then
 			tmp.destroy
 		end
-=begin
 		tmp = IssueCustomField.find_by_name('RqRationale')
 		if (tmp != nil) then
 			tmp.destroy
@@ -90,6 +92,5 @@ include Redmine::I18n
 		if (tmp != nil) then
 			tmp.destroy
 		end
-=end
 	end
 end
