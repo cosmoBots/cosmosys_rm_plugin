@@ -68,6 +68,10 @@ Not imported yet
 		if (tmp != nil) then
 			tmp.destroy
 		end
+		tmp = IssueCustomField.find_by_name('RqLevel')
+		if (tmp != nil) then
+			tmp.destroy
+		end
 		tmp = IssueCustomField.find_by_name('RqRationale')
 		if (tmp != nil) then
 			tmp.destroy
