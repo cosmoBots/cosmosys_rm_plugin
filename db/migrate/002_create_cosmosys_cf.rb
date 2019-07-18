@@ -5,29 +5,37 @@ include Redmine::I18n
 		# Trackers
 		rqtrck = Tracker.find_by_name('Req')
 		rqdoctrck = Tracker.find_by_name('ReqDoc')
+
+		# Custom fields
 		rqtitlefield = IssueCustomField.create!(:name => 'RqTitle', 
 			:field_format => 'string', :searchable => true,
 			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
 
-		# Custom fields
 		rqtypefield = IssueCustomField.create!(:name => 'RqType', 
 	    		:field_format => 'list', :possible_values => ['Info', 'Complex',
 	    		'Opt','Mech','Hw','Sw'], 
 	    		:is_filter => true,
-	    		:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+	    		:is_for_all => true, :tracker_ids => [rqtrck.id])
 
 		rqlevelfield = IssueCustomField.create!(:name => 'RqLevel', 
 	    		:field_format => 'list', :possible_values => ['None', 'System',
 	    		'Derived','External','Shared'], 
 	    		:is_filter => true,
-	    		:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+	    		:is_for_all => true, :tracker_ids => [rqtrck.id])
+
 		rqrationalefield = IssueCustomField.create!(:name => 'RqRationale', 
-			:field_format => 'text', :searchable => true,
-			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+			:field_format => 'text',
+			:description => 'Diagrams of Hierarchy and Dependence',
+			:min_length => '', :max_length => '', :regexp => '',
+			:default_value => '', :is_required => false, 
+			:is_filter => false, :searchable => true, 
+			:visible => true, :role_ids => [],
+			:full_width_layout => true, :text_formatting => "full",
+			:is_for_all => true, :tracker_ids => [rqtrck.id])
 
 		rqsrcfield = IssueCustomField.create!(:name => 'RqSources', 
 			:field_format => 'string', :searchable => true,
-			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+			:is_for_all => true, :tracker_ids => [rqtrck.id])
 
 		rqchapterfield = IssueCustomField.create!(:name => 'RqChapter', 
 			:field_format => 'string', :searchable => false,
@@ -35,11 +43,11 @@ include Redmine::I18n
 
 		rqvarfield = IssueCustomField.create!(:name => 'RqVar', 
 			:field_format => 'string', :searchable => true,
-			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+			:is_for_all => true, :tracker_ids => [rqtrck.id])
 
 		rqvaluefield = IssueCustomField.create!(:name => 'RqValue', 
 			:field_format => 'string', :searchable => true,
-			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
+			:is_for_all => true, :tracker_ids => [rqtrck.id])
 
 		rqprefixfield = IssueCustomField.create!(:name => 'RqPrefix', 
 			:field_format => 'string', :searchable => false,
