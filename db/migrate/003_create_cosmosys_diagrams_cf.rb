@@ -26,13 +26,13 @@ class CreateCosmosysDiagramsCf < ActiveRecord::Migration[5.2]
 		rqhiediaglink = IssueCustomField.create!(:name => 'RqHierarchyDiagram',
 			:field_format => 'link', :description => "A link to the Hierarchy Diagram",
 			:url_pattern => "/projects/%project_identifier%/repository/rq/raw/reporting/doc/img/%id%_h.gv.svg",
-			:default_value => link_str, :is_computed => false,
+			:default_value => link_str,
 			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
 
 		rqdepdiaglink = IssueCustomField.create!(:name => 'RqDependenceDiagram',
 			:field_format => 'link', :description => "A link to the Dependence Diagram",
 			:url_pattern => "/projects/%project_identifier%/repository/rq/raw/reporting/doc/img/%id%_d.gv.svg",
-			:default_value => link_str, :is_computed => false,
+			:default_value => link_str,
 			:is_for_all => true, :tracker_ids => [rqtrck.id, rqdoctrck.id])
 
 		# Project part
@@ -51,12 +51,12 @@ class CreateCosmosysDiagramsCf < ActiveRecord::Migration[5.2]
 		rqprjhiediaglink = ProjectCustomField.create!(:name => 'RqHierarchyDiagram',
 			:field_format => 'link', :description => "A link to the Hierarchy Diagram",
 			:url_pattern => "/projects/%project_identifier%/repository/rq/raw/reporting/doc/img/%project_identifier%_h.gv.svg",
-			:default_value => link_str, :is_computed => false)
+			:default_value => link_str)
 
 		rqprjdepdiaglink = ProjectCustomField.create!(:name => 'RqDependenceDiagram',
 			:field_format => 'link', :description => "A link to the Dependence Diagram",
 			:url_pattern => "/projects/%project_identifier%/repository/rq/raw/reporting/doc/img/%project_identifier%_d.gv.svg",
-			:default_value => link_str, :is_computed => false)
+			:default_value => link_str)
 
 
 		Issue.find_each{|i|
