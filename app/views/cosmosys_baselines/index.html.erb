@@ -1,0 +1,8 @@
+<h2>CosmosysBaselinesController#index</h2>
+
+<% @cosmosys_baselines.each do |baseline| %>
+  <p>
+  <%= baseline.name %>?
+  <%= link_to 'Execute', { :action => 'execute', :id => baseline[:id], :mensaje => 'Ejecutado '+baseline.name }, :method => :post %> (<%= baseline.execute %>) /
+  </p>
+<% end %>
