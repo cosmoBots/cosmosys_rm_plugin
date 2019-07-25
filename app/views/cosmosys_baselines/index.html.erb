@@ -3,6 +3,7 @@
 <% @cosmosys_baselines.each do |baseline| %>
   <p>
   <%= baseline.name %>?
-  <%= link_to 'Execute', { :action => 'execute', :id => baseline[:id], :mensaje => 'Ejecutado '+baseline.name }, :method => :post %> (<%= baseline.execute %>) /
+  <%= link_to 'Execute(POST)', { :action => 'execute', :id => baseline[:id], :project_id => @project.id, :node_id => 2 }, :method => :post %> (<%= baseline.execute %>) /
+  <%= link_to 'Execute(GET)', { :action => 'execute', :id => baseline[:id], :project_id => @project.id, :node_id => 2 }, :method => :get %> (<%= baseline.execute %>) /
   </p>
 <% end %>

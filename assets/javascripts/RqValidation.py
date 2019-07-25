@@ -7,18 +7,18 @@
 from cfg.configfile_req import *
 from redminelib import Redmine
 
-print(req_server_url)
-print(req_key_txt)
-print(req_project_id_str)
+#print(req_server_url)
+#print(req_key_txt)
+#print(req_project_id_str)
 redmine = Redmine(req_server_url,key=req_key_txt)
 projects = redmine.project.all()
 
-print("Proyectos:")
-for p in projects:
-    print ("\t",p.identifier," \t| ",p.name)
+#print("Proyectos:")
+#for p in projects:
+    #print("\t",p.identifier," \t| ",p.name)
 
 my_project = redmine.project.get(req_project_id_str)
-print ("Obtenemos proyecto: ",my_project.identifier," | ",my_project.name)    
+#print("Obtenemos proyecto: ",my_project.identifier," | ",my_project.name)    
 
 # get_ipython().run_line_magic('run', './RqConnectNList.ipynb')
 tmp = redmine.issue.filter(project_id=req_project_id_str, tracker_id=req_rq_tracker_id)
@@ -41,12 +41,14 @@ def parent_child_validation(i,results):
     for c in i.children:
         child_issue = redmine.issue.get(c.id)
         if (req_status_maturity[child_issue.status.name] < req_status_maturity[i.status.name]):
-            print("\n\n**************")
-            print(i.id,": ",i.subject,": ",i.status,":",req_status_maturity[i.status.name])
-            print("\t* ",child_issue.id,": ",child_issue.subject,": ",child_issue.status,":",req_status_maturity[child_issue.status.name])
-            print("xxxxxxxxxxxx: Error.  el requisito hijo está en estado ",child_issue.status," mientras su requisito padre está en estado ",i.status)
+            #print("\n\n**************")
+            #print(i.id,": ",i.subject,": ",i.status,":",req_status_maturity[i.status.name])
+            #print("\t* ",child_issue.id,": ",child_issue.subject,": ",child_issue.status,":",req_status_maturity[child_issue.status.name])
+            #message = "xxxxxxxxxxxx: Error.  el requisito hijo está en estado ",child_issue.status," mientras su requisito padre está en estado ",i.status
+            message = "HieError: stchild=",child_issue.status.name," stparent=",i.status.name
             thiserror = {
                 'type':'hyerarchy',
+                'message':message,
                 'parent':{
                     'id': i.id,
                     'subject': i.subject,
@@ -72,12 +74,13 @@ def dependence_validation(i,results):
         for r in my_filtered_issue_relations:
             rel_issue = redmine.issue.get(r.issue_to_id)
             if (req_status_maturity[rel_issue.status.name] > req_status_maturity[i.status.name]):
-                print("\n\n**************")
-                print(i.id,": ",i.subject,": ",i.status,":",req_status_maturity[i.status.name])
-                print("\t-",r.relation_type,"-> ",rel_issue.subject," : ",rel_issue.status,":",req_status_maturity[rel_issue.status.name])
-                print("xxxxxxxxxxxx: Error.  el requisito dependiente está en estado ",rel_issue.status," mientras el requisito del que depende está en estado ",i.status)
+                #print("\n\n**************")
+                #print(i.id,": ",i.subject,": ",i.status,":",req_status_maturity[i.status.name])
+                #print("\t-",r.relation_type,"-> ",rel_issue.subject," : ",rel_issue.status,":",req_status_maturity[rel_issue.status.name])
+                message = "DepError: strel=",rel_issue.status.name," stdep=",i.status.name
                 thiserror = {
                     'type':'dependency',
+                    'message':message,
                     'dependable':{
                         'id': i.id,
                         'subject': i.subject,
@@ -114,8 +117,10 @@ with open('./RqValidation-Result.json', 'w') as outfile:
 
 for e in result_list:
     print(e)
-print("Acabamos")
+    #print(e.['message']+"\n")
+#print("Acabamos")
 
+print("EOF")
 
 # In[ ]:
 
